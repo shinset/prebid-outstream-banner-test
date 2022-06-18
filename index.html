@@ -1,0 +1,292 @@
+<html lang="en">
+
+<!--source project
+
+Article
+    https://help.o2.yahooinc.com/hc/en-us/articles/360030930732-The-Simplest-Way-to-set-up-Video-Header-Bidding-with-OneVideo
+
+
+Source 
+https://github.com/adam-browning/hb-outstream-demo
+
+
+Demo
+https://cdn.vidible.tv/prod/2020-03/05/5d370f09fa1de000018eed6c_v9.html
+
+
+
+a mixer avec 
+
+https://demo.smartadserver.com/shared/smart/tcj/prebidstd.html
+
+-->
+
+
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Video Outstream Banner  Header Bidding</title>
+	<link rel="stylesheet" href="https://cdn.vidible.tv/prod/2020-03/05/5d370e5afa1de000018eed6b_v4.css">
+
+
+
+<!-- Load Didomi  CMP lib from FGH glolal solution video team  -->
+<script async=false src="https://demo.smartadserver.com/shared/fgh/hb_outstream/didomi_config.js"></script>	
+
+
+<!--Download prebid.js or use test from cdn   http://prebid.org/download.html - Prebid CDN host test lib -->
+<script src="https://cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js"></script>
+
+
+<!---->
+<!---->
+<!---->
+<!---->
+
+<!-- dv360 lib for the tag ID a it is here the  main adserver  -->
+<script async src="//www.googletagservices.com/tag/js/gpt.js"></script>
+
+
+
+	<!-- Prebid config start here  -->
+
+        
+    <script>
+
+        // create 2  variable to contain differents multiples sizes for easier use 
+        var div_1_sizes = [
+            [300, 250],
+            [300, 600]
+        ];
+        var div_2_sizes = [
+            [728, 90],
+            [970, 250],
+            [300, 250],
+            [300, 600]
+        ];
+
+        //standard prebid parameter config 
+        var PREBID_TIMEOUT = 8000;
+        var FAILSAFE_TIMEOUT = 5000;
+
+        var adUnits = [
+            { //declaration of adnunit
+                code: '/19968336/header-bid-tag-0',
+                mediaTypes: {
+                    banner: {
+                        sizes: [[300,250]]
+                    }
+                },
+                bids: [
+                    
+                
+                {
+            bidder: 'smartadserver', // my demopub settting on nwid 8 with a lqm deal set up
+params: {
+    formatId: "72679",
+    pageId: "1002046",
+    siteId: "266913",
+}
+        },
+
+
+
+        {
+            bidder: 'smartadserver', // a publisher placement used for troubleshooting (kly)
+params: {
+    domain: 'https://prg-apac.smartadserver.com',
+    formatId: "111311",
+    pageId: "1556526",
+    siteId: "498334",
+}
+        },
+
+
+
+
+
+                {
+                    bidder: 'appnexus', //appnexus prebid standard placement used for all their demo page
+                    params: {
+                        placementId: 13144370
+                    }
+                }]
+            },
+
+
+            { //declaration of another ad unit
+                code: '/19968336/header-bid-tag-1',
+                mediaTypes: {
+                    banner: {
+                        sizes: [[300,250]]
+                    }
+                },
+                bids: [
+                {
+            bidder: 'smartadserver', // my demopub settting on nwid 8 with a lqm deal set up
+params: {
+    formatId: "72679",
+    pageId: "1002046",
+    siteId: "266913",
+}
+        },    
+                
+                
+                {
+                    bidder: 'appnexus',  //appnexus prebid standard placement used for all their demo page
+                    params: {
+                        placementId: 13144370
+                    }
+                }]
+            }
+        ];
+
+        // ======== DO NOT EDIT BELOW THIS LINE this is prebid google snippet to handle the header bidding  =========== //
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        googletag.cmd.push(function() {
+            googletag.pubads().disableInitialLoad();
+        });
+
+        var pbjs = pbjs || {};
+        pbjs.que = pbjs.que || [];
+
+        pbjs.que.push(function() {
+
+            pbjs.setConfig({
+      consentManagement: { //gdpr module base
+        gdpr: {
+          cmpApi: 'iab',
+          timeout: 8000,
+          defaultGdprScope: true
+        }
+      }
+    });
+
+            pbjs.addAdUnits(adUnits);
+            pbjs.requestBids({
+                bidsBackHandler: initAdserver,
+                timeout: PREBID_TIMEOUT
+            });
+        });
+
+        function initAdserver() {
+            if (pbjs.initAdserverSet) return;
+            pbjs.initAdserverSet = true;
+            googletag.cmd.push(function() {
+                pbjs.que.push(function() {
+                    pbjs.setTargetingForGPTAsync();
+                    googletag.pubads().refresh();
+                });
+            });
+        }
+        // in case PBJS doesn't load
+        setTimeout(function() {
+            initAdserver();
+        }, FAILSAFE_TIMEOUT);
+
+        googletag.cmd.push(function() {
+            googletag.defineSlot('/19968336/header-bid-tag-0', div_1_sizes, 'div-1').addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();
+        });
+        googletag.cmd.push(function() {
+            googletag.defineSlot('/19968336/header-bid-tag-1', div_2_sizes, 'div-2').addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();
+        });
+
+    </script>
+
+
+
+</head>
+
+<body>
+	<div class="container">
+		<img src="https://images.squarespace-cdn.com/content/v1/628beb29061b64244a8ea76d/4fcc9705-ee3f-40ed-b334-2c9520bfef6c/svnlogowebsite.png?format=1500w" aligh='middle' />
+		<h1>Header Bidding Demo<br>Video Outstream Banner</h1>
+		<p style="color:crimson"><b>Important</b>
+		</p>
+		<p><b></b></p>
+		<p><b>This is a demo of video outstream in header bidding context using a banner mediaTypes with DV360 as main adserver</b> </p>
+		<p>Sunt labore, modi ut, nisi quos similique aliquam deserunt id sit, necessitatibus dignissimos. Totam,
+			officiis? Eligendi nostrum quibusdam reprehenderit delectus, sit sapiente consequuntur quia id debitis
+			doloremque illum, inventore deserunt.</p>
+		<p>Sed, fugiat dicta aspernatur molestiae eveniet odio dolor nobis deserunt quae? Quidem consectetur dicta
+			aperiam voluptatum labore reprehenderit perspiciatis dolores ipsa vero. Cum et officiis sit doloribus
+			eveniet vero illum!</p>
+		<p>Eaque repellat dolore, ea totam autem sit amet deleniti alias porro, explicabo dicta enim esse qui veniam
+			adipisci ipsum labore! Libero, eius suscipit vitae dolore fugiat vero sed a sint!</p>
+
+            <h4 style="color:crimson"> Below this paragraph is the element that will nest the Outstream unit</h4>
+
+
+            <!-- Step 5: Designate the element that will contain the Outstream ad Unit for auction -->
+            <div id="video1" style="width:400px; margin: auto"></div>
+    
+            <h5>Div-1</h5>
+            <div id='div-1'style="width:400px; margin: auto">
+                <script type='text/javascript'>
+                    googletag.cmd.push(function() {
+                        googletag.display('div-1');
+                    });
+    
+                </script>
+            </div>
+    
+            <br>
+    
+            <h5>Div-2</h5>
+            <div id='div-2'style="width:400px; margin: auto">
+                <script type='text/javascript'>
+                    googletag.cmd.push(function() {
+                        googletag.display('div-2');
+                    });
+    
+                </script>
+            </div>
+
+		<p>Vitae reprehenderit facere cupiditate consequuntur quidem molestias dolorem veritatis maiores perspiciatis
+			itaque iure numquam illum fuga voluptates odit architecto cum, perferendis corporis sunt mollitia in
+			laudantium! Accusamus non sit quis?</p>
+		<p>Eveniet, vel quisquam quibusdam eum saepe quos culpa quia error, voluptatibus iste hic incidunt dicta cum
+			sunt nesciunt recusandae animi nobis? Expedita, nisi! Eaque minima doloribus necessitatibus nulla ut
+			eligendi.</p>
+		<p>Animi distinctio doloremque facere, officia fugiat maiores tempore quasi voluptatibus voluptatem itaque a
+			debitis fugit. Consectetur, dolorem! Id quia vel est recusandae, maiores odio blanditiis dolore assumenda
+			saepe. Exercitationem, similique?</p>
+		<p>Officia excepturi, voluptatibus doloremque odit dolorum ab. Possimus facilis quisquam sunt error eveniet
+			nostrum excepturi natus dolorem aliquam, rem, dicta obcaecati aperiam soluta vero tempore necessitatibus,
+			vel autem. Ducimus, corporis.</p>
+		<p>Velit ratione, porro eaque distinctio sint iusto, blanditiis adipisci reiciendis aperiam facere cupiditate.
+			Illum sunt dignissimos debitis cumque, voluptas at cum soluta delectus quos laboriosam unde odio quis harum
+			facere?</p>
+
+		<p>Aliquid dicta dolorum iure repellat cupiditate adipisci maiores corrupti, officia provident illo a deserunt
+			maxime totam necessitatibus corporis! Fugiat in laudantium eos magnam facere rem atque facilis sapiente
+			reiciendis neque.</p>
+
+
+		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione, doloremque possimus saepe aliquam odit
+			fugiat repellendus iste at animi nulla adipisci aliquid non quia sapiente illum veniam ab, laborum quam.</p>
+		<p>Debitis eaque excepturi itaque nostrum quasi quae veniam odit. Iure soluta neque harum commodi tempore
+			doloribus accusamus minima, ex amet, provident facere at consequatur asperiores earum cumque nesciunt.
+			Officia, facere?</p>
+		<p>Cumque eligendi perspiciatis perferendis! Voluptates quam excepturi, ipsa quibusdam facilis laborum. Dolores
+			non facere quia, repellat rerum tempore quasi ratione enim excepturi ut sunt nulla quaerat autem alias optio
+			aperiam.</p>
+		<p>Sapiente error commodi odit dolor est quis, odio, ad nisi eius eaque fuga hic consectetur nobis, id sint
+			asperiores cumque libero. Eaque vero consequuntur explicabo nisi placeat, quisquam veritatis culpa.</p>
+		<p>Nemo tenetur, quod, beatae et quidem molestias quisquam impedit, totam aut minus ea inventore expedita
+			ratione officia neque corporis esse necessitatibus ad in aliquid. Suscipit temporibus numquam nesciunt optio
+			ducimus.</p>
+
+
+	</div>
+</body>
+
+</html>
+<script>
